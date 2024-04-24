@@ -50,6 +50,7 @@ class AuthBLL:
                 user=user_id,
                 company=company_id,
                 role=user.role,
+                usertype=user.usertype,
                 user_name=user.name,
                 company_name=company.name,
             )

@@ -129,6 +129,7 @@ def authorize_credentials(auth_data, service, action, call):
         user=user.id,
         company=user.company,
         role=user.role,
+        usertype=user.usertype,
         user_name=user.name,
         company_name=company.name,
     )

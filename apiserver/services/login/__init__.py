@@ -20,6 +20,7 @@ def supported_modes(call: APICall, _, __: GetSupportedModesRequest):
             name=guest_user.name,
             username=guest_user.username,
             password=guest_user.password,
+            usertype=guest_user.usertype,
         )
     else:
         guest = BasicGuestMode()

@@ -35,6 +35,7 @@ def _ensure_auth_user(user_data: dict, company_id: str, log: Logger, revoke: boo
         name=user_data["name"],
         company=company_id,
         role=user_data["role"],
+        usertype=user_data.get("usertype", "user"),
         email=user_data["email"],
         created=datetime.utcnow(),
         credentials=credentials,
@@ -79,6 +80,7 @@ def ensure_fixed_user(user: FixedUser, log: Logger, emails: set):
     data["email"] = email
     data["role"] = Role.guest if user.is_guest else Role.user
     data["autocreated"] = True
+    data["usertype"] = user.usertype
 
     _ensure_auth_user(user_data=data, company_id=user.company, log=log)
     emails.add(email)

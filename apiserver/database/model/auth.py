@@ -69,6 +69,9 @@ class User(DbModelMixin, AuthDocument):
     role = StringField(required=True, choices=get_options(Role), default=Role.user)
     """ User role """
 
+    usertype = StringField(required=True, default="user")
+    """ User type """
+
     company = StringField(required=True)
     """ Company this user belongs to """
 

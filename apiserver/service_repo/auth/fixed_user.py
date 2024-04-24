@@ -17,6 +17,7 @@ class FixedUser:
     username: str
     password: str
     name: str
+    usertype: str
     company: str = get_default_company()
 
     is_guest: bool = False
@@ -90,6 +91,7 @@ class FixedUser:
                 password=config.get("services.auth.fixed_users.guest.password"),
                 name=config.get("services.auth.fixed_users.guest.name"),
                 company=config.get("services.auth.fixed_users.guest.default_company"),
+                usertype=config.get("services.auth.fixed_users.guest.usertype"),
             )
 
     def __hash__(self):
