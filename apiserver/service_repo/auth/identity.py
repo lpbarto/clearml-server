@@ -2,11 +2,10 @@ from .dictable import Dictable
 
 
 class Identity(Dictable):
-    def __init__(self, user, company, role, usertype='admin', user_name=None, company_name=None):
+    def __init__(self, user, company, role, user_name=None, company_name=None):
         self._user = user
         self._company = company
         self._role = role
-        self._usertype = usertype
         self._user_name = user_name
         self._company_name = company_name
 
@@ -21,10 +20,6 @@ class Identity(Dictable):
     @property
     def role(self):
         return self._role
-
-    @property
-    def usertype(self):
-        return self._usertype
 
     @property
     def user_name(self):

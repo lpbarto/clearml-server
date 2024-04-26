@@ -21,3 +21,4 @@ class User(DbModelMixin, Document):
     avatar = StringField()
     preferences = DynamicField(default="", exclude_by_default=True)
     created = DateTimeField()
+    usertype = StringField()

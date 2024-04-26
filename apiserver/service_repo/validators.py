@@ -73,7 +73,9 @@ def validate_auth(endpoint: Endpoint, call: "APICall"):
     # noinspection PyBroadException
     try:
         auth = call.authorization
+        log.info(f"Validating auth: {auth}")
         auth_type, _, auth_data = auth.partition(" ")
+        log.info(f"Auth data: {auth_data}")
         authorize_func = get_auth_func(auth_type)
         call.auth = authorize_func(auth_data, service, action, call)
     except Exception:

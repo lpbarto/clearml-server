@@ -18,6 +18,7 @@ def _ensure_auth_user(user_data: dict, company_id: str, log: Logger, revoke: boo
 
         user = AuthUser.objects(credentials__match=creds).first()
         if user:
+            log.info(f"User already exists: {user.id}")
             if revoke:
                 user.credentials = []
                 user.save()
@@ -35,7 +36,6 @@ def _ensure_auth_user(user_data: dict, company_id: str, log: Logger, revoke: boo
         name=user_data["name"],
         company=company_id,
         role=user_data["role"],
-        usertype=user_data.get("usertype", "user"),
         email=user_data["email"],
         created=datetime.utcnow(),
         credentials=credentials,
@@ -47,7 +47,7 @@ def _ensure_auth_user(user_data: dict, company_id: str, log: Logger, revoke: boo
     return user.id
 
 
-def _ensure_backend_user(user_id: str, company_id: str, user_name: str):
+def _ensure_backend_user(user_id: str, company_id: str, user_name: str, usertype: str = "admin"):
     given_name, _, family_name = user_name.partition(" ")
 
     User(
@@ -57,6 +57,7 @@ def _ensure_backend_user(user_id: str, company_id: str, user_name: str):
         given_name=given_name,
         family_name=family_name,
         created=datetime.utcnow(),
+        usertype=usertype,
     ).save()
 
     return user_id
@@ -69,7 +70,10 @@ def ensure_fixed_user(user: FixedUser, log: Logger, emails: set):
         try:
             log.info(f"Updating user name: {user.name}")
             given_name, _, family_name = user.name.partition(" ")
-            db_user.update(name=user.name, given_name=given_name, family_name=family_name)
+            db_user.update(name=user.name, given_name=given_name, family_name=family_name, usertype=user.usertype)
+            email = f"{user.user_id}@example.com"
+            emails.add(email)
+
         except Exception:
             pass
         return
@@ -80,9 +84,8 @@ def ensure_fixed_user(user: FixedUser, log: Logger, emails: set):
     data["email"] = email
     data["role"] = Role.guest if user.is_guest else Role.user
     data["autocreated"] = True
-    data["usertype"] = user.usertype
 
     _ensure_auth_user(user_data=data, company_id=user.company, log=log)
     emails.add(email)
 
-    return _ensure_backend_user(user.user_id, user.company, user.name)
+    return _ensure_backend_user(user.user_id, user.company, user.name, user.usertype)

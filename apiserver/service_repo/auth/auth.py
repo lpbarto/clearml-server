@@ -99,7 +99,6 @@ def authorize_credentials(auth_data, service, action, call):
                 raise errors.unauthorized.InvalidCredentials(
                     "endpoint not allowed for guest"
                 )
-
             query = Q(id=fixed_user.user_id)
 
     with translate_errors_context("authorizing request"):
@@ -129,7 +128,6 @@ def authorize_credentials(auth_data, service, action, call):
         user=user.id,
         company=user.company,
         role=user.role,
-        usertype=user.usertype,
         user_name=user.name,
         company_name=company.name,
     )

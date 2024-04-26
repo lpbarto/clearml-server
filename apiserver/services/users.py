@@ -115,7 +115,6 @@ def get_current_user(call: APICall, company_id, _):
 
     user = res[0]
     user["role"] = call.identity.role
-    user["usertype"] = call.identity.usertype
 
     resp = dict(
         user=user, getting_started=config.get("apiserver.getting_started_info", None)
