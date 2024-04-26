@@ -6,7 +6,7 @@ USER root
 WORKDIR /opt
 
 RUN apt-get update && apt-get install -y git
-RUN echo "17" && git clone --branch limit-users ${CLEARML_WEB_GIT_URL} clearml-web
+RUN echo "17" && git clone ${CLEARML_WEB_GIT_URL} clearml-web
 RUN mv clearml-web /opt/open-webapp
 COPY --chmod=744 docker/build/internal_files/build_webapp.sh /tmp/internal_files/
 RUN /bin/bash -c '/tmp/internal_files/build_webapp.sh'
