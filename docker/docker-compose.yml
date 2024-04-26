@@ -5,7 +5,7 @@ services:
     command:
     - apiserver
     container_name: clearml-apiserver
-    image: allegroai/clearml:latest
+    image: disit/clearml:latest
     restart: unless-stopped
     volumes:
     - /opt/clearml/logs:/var/log/clearml
@@ -74,7 +74,7 @@ services:
     command:
     - fileserver
     container_name: clearml-fileserver
-    image: allegroai/clearml:latest
+    image: disit/clearml:latest
     environment:
       CLEARML__fileserver__delete__allow_batch: "true"
     restart: unless-stopped
@@ -111,7 +111,7 @@ services:
     container_name: clearml-webserver
     # environment:
     #  CLEARML_SERVER_SUB_PATH : clearml-web # Allow Clearml to be served with a URL path prefix.
-    image: allegroai/clearml:latest
+    image: disit/clearml:latest
     restart: unless-stopped
     depends_on:
       - apiserver
@@ -129,7 +129,7 @@ services:
       - elasticsearch
       - fileserver
     container_name: async_delete
-    image: allegroai/clearml:latest
+    image: disit/clearml:latest
     networks:
       - backend
     restart: unless-stopped

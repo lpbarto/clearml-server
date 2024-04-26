@@ -15,6 +15,7 @@ class BasicGuestMode(Base):
     name = StringField()
     username = StringField()
     password = StringField()
+    usertype = StringField()
 
 
 class BasicMode(Base):
