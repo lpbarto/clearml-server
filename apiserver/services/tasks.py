@@ -2,6 +2,8 @@ from copy import deepcopy
 from datetime import datetime
 from functools import partial
 from typing import Sequence, Union, Tuple
+import logging
+
 
 import attr
 from mongoengine import EmbeddedDocument, Q
@@ -137,6 +139,9 @@ from apiserver.services.utils import (
 )
 from apiserver.utilities.dicts import nested_get
 from apiserver.utilities.partial_version import PartialVersion
+
+from apiserver.config_repo import config
+
 
 task_fields = set(Task.get_fields())
 task_script_stripped_fields = set(
@@ -517,6 +522,11 @@ def prepare_create_fields(
 
 
 def _validate_and_get_task_from_call(call: APICall, **kwargs) -> Tuple[Task, dict]:
+
+    if (config.get("apiserver.auth.limit_ips.enabled", False) and
+            call.real_ip not in config.get("apiserver.auth.limit_ips.allowed_ips", [])):
+        raise PermissionError("IP not allowed for task creation")
+
     with translate_errors_context(
         field_does_not_exist_cls=errors.bad_request.ValidationError
     ):
