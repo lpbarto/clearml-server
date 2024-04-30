@@ -525,6 +525,7 @@ def _validate_and_get_task_from_call(call: APICall, **kwargs) -> Tuple[Task, dic
 
     if (config.get("apiserver.auth.limit_ips.enabled", False) and
             call.real_ip not in config.get("apiserver.auth.limit_ips.allowed_ips", [])):
+        logging.info(f"IP {call.real_ip} not allowed for task creation")
         raise PermissionError("IP not allowed for task creation")
 
     with translate_errors_context(
